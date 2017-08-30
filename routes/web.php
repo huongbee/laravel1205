@@ -86,3 +86,92 @@ Route::post('login',[
 	'as'=>'login-form', //tên route
 	'uses'=>'PageController@postLogin' //gọi controller
 ]);
+
+
+Route::get('upload-file',[
+	'as' => 'uploadfile',
+	'uses' => 'PageController@getFormUpload'
+]);
+
+Route::post('upload-file',[
+	'as' => 'uploadfile',
+	'uses' => 'PageController@postUploadFile'
+]);
+
+
+Route::get('set-cookie',"PageController@setCookie");
+Route::get('get-cookie',"PageController@getCookie");
+
+
+Route::get('test-json','PageController@testJson');
+
+
+Route::get('session',"PageController@setSession");
+
+
+
+
+
+Route::get('home','PageController@getTrangchu');
+Route::get('detail','PageController@getDetail');
+
+Route::group(['prefix'=>'database'],function(){
+
+	Route::get('create-product-table',function(){
+
+		Schema::create('products',function($table){ //product: tên bảng
+			$table->increments('id');
+			$table->string('name',255);
+			$table->text('desc');
+			$table->double('price');
+		});
+		echo 'Đã tạo bảng';
+	});
+
+	Route::get('create-type-product-table',function(){
+
+		Schema::create('type_products',function($table){ //product: tên bảng
+			$table->increments('id');
+			$table->string('name',255);
+			$table->text('desc');
+		});
+		echo 'Đã tạo bảng loại sp';
+	});
+
+	Route::get('modify-product-table',function(){
+
+		Schema::table('products',function($table){
+			$table->integer('id_type')->unsigned();
+		});
+		echo 'đã thêm cột thành công';
+	});
+
+	Route::get('add-foreignkey-product',function(){
+
+		Schema::table('products',function($table){
+			$table->foreign('id_type')->references('id')->on('type_products');
+		});
+		echo 'đã tạo khóa ngoại';
+	});
+
+	Route::get('delete-d',function(){
+		Schema::drop('d');
+	});
+
+	Route::get('delete-products',function(){
+		Schema::dropIfExists('products');
+	});
+});
+
+
+Route::group(['prefix'=>'query-builder'], function(){
+
+	Route::get('products','QueryBuilderController@index');
+
+	Route::get('customer','QueryBuilderController@customer');
+
+
+	Route::get('relation','QueryBuilderController@relation');
+
+
+});

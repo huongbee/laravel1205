@@ -6,7 +6,7 @@
 	<title>Login</title>
 	<link rel="stylesheet" href="">
 </head>
-<body>
+{{$name}}
 	@if($errors->any())
 		@foreach($errors->all() as $err)
 			<li>{{$err}}</li>
