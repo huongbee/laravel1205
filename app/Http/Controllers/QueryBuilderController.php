@@ -121,4 +121,10 @@ class QueryBuilderController extends Controller
         echo $products->tb;
 
     }
+
+
+
+
+
+    
 }
