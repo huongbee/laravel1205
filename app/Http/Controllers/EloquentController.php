@@ -89,4 +89,49 @@ class EloquentController extends Controller
     		echo "<hr>";
        	}
     }
+
+    public function index24(){
+        //use App\Bills;
+        //$bill = \App\Bills::with('Products','BillDetail')->get();
+
+        $bill = \App\Bills::with('BillDetail','BillDetail.Products')->get();
+
+
+        //dd($bill);
+
+        foreach ($bill as $hoadon) {
+            echo "Hóa đơn số: ".$hoadon->id;
+
+            $total = 0;
+
+            foreach ($hoadon->BillDetail as $bill_detail) {
+                echo "<br>";
+                echo ' - Tên sp: '.$bill_detail->Products->name;
+                echo "<br>";
+                echo ' - Giá sp: '.$bill_detail->Products->unit_price. ' - '. $bill_detail->quantity;
+                $total += $bill_detail->quantity * $bill_detail->Products->unit_price;
+
+            } 
+            
+            echo "<br>";
+            echo 'Tổng tiền: '.$total;
+            echo "<hr>";
+        }
+    }
+
+    public function index25(){
+        $type = TypeProducts::with('BillDetail','BillDetail.Bills.Customers')->get();
+        //dd($type);
+        foreach ($type as $loai) {
+            echo "Tên loai: ".$loai->name;
+            echo "<br>";
+            foreach ($loai->BillDetail as $cus) {
+                
+                echo $cus->Bills->Customers->name;
+                echo "<br>";
+            }
+            echo "<hr>";
+        }
+        
+    }
 }

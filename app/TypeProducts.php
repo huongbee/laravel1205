@@ -16,5 +16,16 @@ class TypeProducts extends Model
     }
 
 
+    public function BillDetail(){
+    	return $this->hasManyThrough(
+    		'App\BillDetail',
+    		'App\Products',
+    		'id_type',
+    		'id_product',
+    		'id',
+    		'id'
+    	);
+    }
+
 
 }

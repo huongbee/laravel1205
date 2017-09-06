@@ -20,4 +20,10 @@ class Products extends Model
     	return $this->hasMany('App\BillDetail','id_product','id');
     	//id ? Products
     }
+
+
+    public function Bills(){
+        return $this->belongsToMany('App\Bills','bill_detail','id_product','id_bill');
+        //model_lienket_den,'table_trung_gian,khoa_ngoai_table_htai,khoangoai_table_lienket'
+    }
 }

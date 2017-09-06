@@ -178,7 +178,7 @@ Route::group(['prefix'=>'query-builder'], function(){
 
 Route::group(['prefix'=>'eloquent'], function(){
 
-	Route::get('products', 'EloquentController@index');
+	Route::get('products', 'EloquentController@index25');
 
 	Route::get('insert-product', 'EloquentController@insertProduct');
 
