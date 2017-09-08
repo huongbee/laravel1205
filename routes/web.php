@@ -77,15 +77,6 @@ Route::group(['prefix'=>'admin'],function(){
 // gọi controller
 Route::get('test1/{name}/{class}','PageController@getName');
 
-Route::get('login',[
-	'as'=>'login-form', //tên route
-	'uses'=>'PageController@getLogin' //gọi controller
-]);
-
-Route::post('login',[
-	'as'=>'login-form', //tên route
-	'uses'=>'PageController@postLogin' //gọi controller
-]);
 
 
 Route::get('upload-file',[
@@ -176,7 +167,24 @@ Route::group(['prefix'=>'query-builder'], function(){
 
 });
 
-Route::group(['prefix'=>'eloquent'], function(){
+
+
+Route::get('login',[
+	'as'=>'login-form', //tên route
+	'uses'=>'PageController@getLogin' //gọi controller
+]);
+
+Route::post('login',[
+	'as'=>'login-form', //tên route
+	'uses'=>'PageController@postLogin' //gọi controller
+]);
+
+
+Route::get('logout','PageController@getLogout');
+
+
+
+Route::group(['prefix'=>'eloquent','middleware'=>'adminLogin'], function(){
 
 	Route::get('products', 'EloquentController@index25');
 

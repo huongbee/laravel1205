@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Auth;
+use Hash;
 
 class PageController extends Controller
 {
@@ -32,6 +34,8 @@ class PageController extends Controller
 
 
     public function getLogin(){
+        // $password = Hash::make(111111);
+        // echo $password;
     	return view('login');
     }
 
@@ -41,29 +45,54 @@ class PageController extends Controller
     	//print_r($username[0]);
     	//echo '<br>';
     	//echo $password = $request->password;
+
     	$this->validate($request,
     		[
 
-	    		'username[0]'	=>'required|min:6', //required:bắt buộc phải nhập
-	    		'username[1]'	=>'required|min:6',
+	    		'username'	=>'required|min:6', //required:bắt buộc phải nhập
 	    		'password'		=>'required|min:6|max:10'
 	    	],
 	    	[
-	    		'username[0].required' => "Vui lòng nhập tên 1",
-	    		'username[1].required' => "Vui lòng nhập tên 2",
-	    		'username[0].min' 		=> "Tên 1 phải ít nhất 6 kí tự",
-	    		'username[1].min' 		=> "Tên 2 phải ít nhất 6 kí tự",
+	    		'username.required' => "Vui lòng nhập tên ",
+	    		'username.min' 		=> "Tên phải ít nhất 6 kí tự",
 	    		'password.required' => 'Vui lòng nhập mk',
 	    		'password.min' 		=> "MK phải ít nhất 6 kí tự",
 	    		'password.max' 		=> 'MK phải ko quá 10 kí tự'
 	    	]
     	);
+        $array = [
+            'email' => $request->username,
+            'password' => $request->password
+        ];
+        if(Auth::attempt($array)){
+            //login thành công
+            echo "Đăng nhập thành công";
+            echo '<br>';
 
-    	$data = $request->all();
-    	echo "<pre>";
-    	print_r($data);
-    	echo "</pre>";
+            echo Auth::user()->full_name;
+            echo '<br>';
+
+
+            echo "<a href='logout'>Đăng xuất</a>";
+        }
+        else{
+            return redirect()->back();
+        }
     }
+
+
+    public function getLogout(){
+        if(Auth::check()){
+            Auth::logout();
+            return redirect()->route('login-form')
+                             ->with('thanhcong','Đăng xuất thành công');
+        }
+        else{
+            echo 'Bạn chưa đăng nhập';
+        }
+    }
+
+
 
     public function getFormUpload(){
         $data = array('PHP', 'iOS', 'Android');
